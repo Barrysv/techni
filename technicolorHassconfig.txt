@@ -1,0 +1,38 @@
+I've just made some edits but there might be typos.  I also renamed the file to 'technicolor.py'
+
+need to install some packages in your home assistant python:
+(homeassistant) homeassistant@hass:/home/pi $ pip3 install toml
+(homeassistant) homeassistant@hass:/home/pi $ pip3 install beautifulsoup4
+(homeassistant) homeassistant@hass:/home/pi $ pip3 install srp
+
+
+$# configuration.yaml entry
+sensor:
+  - platform: technicolor
+    name: technicolor
+    host: 10.1.1.1
+    username: admin
+    password: yourmodempassword
+    json_attributes:
+      - up_rate
+      - down_rate
+      - up_maxrate
+      - down_maxrate
+      - up_power
+      - down_power
+      - up_noisemargin
+      - down_noisemargin
+      - up_transferred
+      - down_transferred
+      - dsl_uptime
+      - dsl_status
+   value_template: '{{ value_json }}'
+    - platform: template
+      sensors:
+#add to the below to match the attributes above
+      up_rate:
+        friendly_name: 'Up rate'
+        value_template: '{{ states.sensor.technicolor.attributes["up_rate"] }}'
+      down_rate:
+        friendly_name: 'Down rate'
+        value_template: '{{ states.sensor.technicolor.attributes["down_rate"] }}'

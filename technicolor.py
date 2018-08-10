@@ -6,6 +6,12 @@ from collections import OrderedDict
 import binascii
 import re
 import json
+import requests
+from bs4 import BeautifulSoup
+import toml
+import srp
+import datetime
+import time
 
 from homeassistant.const import (
     CONF_NAME, CONF_PASSWORD, CONF_USERNAME,

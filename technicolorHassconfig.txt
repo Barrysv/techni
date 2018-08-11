@@ -1,8 +1,7 @@
-I've just made some edits but there might be typos.  I also renamed the file to 'technicolor.py'
 
 need to install some packages in your home assistant python:
 (homeassistant) homeassistant@hass:/home/pi $ pip3 install toml
-(homeassistant) homeassistant@hass:/home/pi $ pip3 install beautifulsoup4
+(homeassistant) homeassistant@hass:/home/pi $ pip3 install bs4
 (homeassistant) homeassistant@hass:/home/pi $ pip3 install srp
 
 

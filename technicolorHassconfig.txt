@@ -13,26 +13,12 @@ sensor:
     host: 10.1.1.1
     username: admin
     password: yourmodempassword
-    json_attributes:
-      - up_rate
-      - down_rate
-      - up_maxrate
-      - down_maxrate
-      - up_power
-      - down_power
-      - up_noisemargin
-      - down_noisemargin
-      - up_transferred
-      - down_transferred
-      - dsl_uptime
-      - dsl_status
-   value_template: '{{ value_json }}'
-    - platform: template
-      sensors:
+  - platform: template
+    sensors:
 #add to the below to match the attributes above
       up_rate:
         friendly_name: 'Up rate'
-        value_template: '{{ states.sensor.technicolor.attributes["up_rate"] }}'
+        value_template: '{{ states.sensor.technicolor.value["up_rate"] }}'
       down_rate:
         friendly_name: 'Down rate'
-        value_template: '{{ states.sensor.technicolor.attributes["down_rate"] }}'
+        value_template: '{{ states.sensor.technicolor.value["down_rate"] }}'

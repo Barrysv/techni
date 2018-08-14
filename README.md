@@ -6,13 +6,14 @@ How to use:
 2. as your homeassistant user and python profile active install dependancies
 ie do this: sudo su -s /bin/bash homeassistant
 and: source /srv/homeassistant/bin/activate
-
+```
   pip3 install bs4
   pip3 install requests
   pip3 install srp
+```
 
 3. in your sensors.yaml file include the following.
-
+```
 - platform: technicolor
   name: modem
   host: 10.1.1.1
@@ -43,10 +44,10 @@ and: source /srv/homeassistant/bin/activate
     max_down_rate:
       friendly_name: 'DSL max down rate'
       value_template: '{{ states.sensor.modem.attributes.down_maxrate }}'
-
+```
 
 4. Use Groups to customise these into a card - in my groups.yaml:
-
+```
 system_status:
   name: System
   entities:
@@ -59,3 +60,4 @@ system_status:
     - sensor.dsl_up_noisemargin
     - sensor.max_down_rate
     - sensor.max_up_rate
+```

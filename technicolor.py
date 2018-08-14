@@ -13,7 +13,7 @@ import voluptuous as vol
 
 from homeassistant.const import (
     STATE_UNKNOWN, CONF_NAME, CONF_PASSWORD, CONF_USERNAME,
-    CONF_HOST,CONF_VALUE_TEMPLATE)
+    CONF_HOST)
 from homeassistant.helpers.entity import Entity
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 import homeassistant.helpers.config_validation as cv
@@ -25,7 +25,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_PASSWORD): cv.string,
     vol.Required(CONF_USERNAME): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-    vol.Optional(CONF_VALUE_TEMPLATE): cv.template,
 })
 
 
@@ -35,27 +34,23 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
     name = config.get(CONF_NAME)
-    value_template = config.get(CONF_VALUE_TEMPLATE)
-
-    if value_template is not None:
-        value_template.hass = hass
 
     fetch = Fetcher({'address':address, 'username':username, 'password':password})
     fetch.get()
     
-    add_devices([TechnicolorModemSensor(hass, fetch, name, value_template)], True)
+    add_devices([TechnicolorModemSensor(hass, fetch, name)], True)
     
 class TechnicolorModemSensor(Entity):
     """Representation of a modem Sensor."""
 
-    def __init__(self, hass, fetch, name, value_template):
+    def __init__(self, hass, fetch, name):
         """Initialize the sensor."""
         self._state = STATE_UNKNOWN
         self._name = name
         self._hass = hass
         self.fetch = fetch
         self._unit_of_measurement = None
-        self._value_template = value_template
+        self._attributes = None
 
     @property
     def name(self):
@@ -76,7 +71,12 @@ class TechnicolorModemSensor(Entity):
     def state(self):
         """Return the state of the sensor."""
         return self._state
-
+    
+    @property
+    def device_state_attributes(self):
+        """Return the state attributes."""
+        return self._attributes
+        
     def update(self):
         """Fetch new state data for the sensor.
 
@@ -134,7 +134,8 @@ class TechnicolorModemSensor(Entity):
             res['up_noisemargin'], res['down_noisemargin'] = fetch_pair(soup, "Noise Margin", 'dB')
             #res['up_transferred'], res['down_transferred'] = fetch_pair(soup, "Data Transferred", "MBytes")
             #fetch_line_attenuation(soup, res)
-            res['dsl_uptime'] = fetch_uptime(soup ,'DSL Uptime')
+            res['dsl_uptime_seconds'] = fetch_uptime(soup ,'DSL Uptime')
+            res['dsl_uptime'] = fetch_string(soup ,'DSL Uptime')
             #res['dsl_mode'] = fetch_string(soup, 'DSL Mode')
             #res['dsl_type'] = fetch_string(soup, 'DSL Type')
             res['dsl_status'] = fetch_string(soup, 'DSL Status')
@@ -167,9 +168,8 @@ class TechnicolorModemSensor(Entity):
             parse_broadband(stats, stats_page)
         #if gateway_page:
         #    parse_gateway(stats, gateway_page)
-        #print('raw dump')
-        #print('\n'.join('%s %s' % (str(k), str(v)) for k, v in stats.items()))
-        self._state = json.dumps(stats, indent=4)
+        self._attributes = dict(stats)
+        self._state = stats['dsl_status']
 
 class Fetcher(object):
     """Class for handling the data retrieval."""

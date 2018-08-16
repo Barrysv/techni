@@ -7,17 +7,47 @@ need to install some packages in your home assistant python:
 
 $# configuration.yaml entry
 sensor:
-  - platform: technicolor
-    name: technicolor
-    host: 10.1.1.1
-    username: admin
-    password: yourmodempassword
-  - platform: template
-    sensors:
+– platform: command_line
+  name: modem
+  json_attributes:
+    – dsl_uptime
+    – dsl_status
+    – down_rate
+    – up_rate
+    – down_maxrate 
+    – up_maxrate
+    – down_noisemargin
+    – up_noisemargin
+  command: '~pi/venv/bin/python3 ~/.homeassistant/scripts/tgiistat.py --json -c ~/.homeassistant/scripts/tgiistat.toml'
+  value_template: '{{ value_json.dsl_status }}'
+– platform: template
+  sensors:
 #add to the below to match the attributes above
-      up_rate:
-        friendly_name: 'Up rate'
-        value_template: '{{ states.sensor.technicolor.value["up_rate"] }}'
-      down_rate:
-        friendly_name: 'Down rate'
-        value_template: '{{ states.sensor.technicolor.value["down_rate"] }}'
+    up_rate:
+      friendly_name: 'Up rate'
+      unit_of_measurement: 'kbps'
+      value_template: '{{ states.sensor.modem.attributes.up_rate }}'
+    down_rate:
+      friendly_name: 'Down rate'
+      unit_of_measurement: 'kbps'
+      value_template: '{{ states.sensor.modem.attributes.down_rate }}'
+    dsl_uptime:
+      friendly_name: 'DSL uptime'
+      unit_of_measurement: 'time'
+      value_template: '{{ states.sensor.modem.attributes.dsl_uptime}}'
+    dsl_up_noisemargin:
+      friendly_name: 'DSL up noisemargin'
+      unit_of_measurement: 'dB'
+      value_template: '{{ states.sensor.modem.attributes.up_noisemargin}}'
+    dsl_down_noisemargin:
+      friendly_name: 'DSL down noisemargin'
+      unit_of_measurement: 'dB'
+      value_template: '{{ states.sensor.modem.attributes.down_noisemargin}}'
+    max_up_rate:
+      friendly_name: 'DSL max up rate'
+      unit_of_measurement: 'kbps'
+      value_template: '{{ states.sensor.modem.attributes.up_maxrate }}'
+    max_down_rate:
+      friendly_name: 'DSL max down rate'
+      unit_of_measurement: 'kbps'
+      value_template: '{{ states.sensor.modem.attributes.down_maxrate }}'

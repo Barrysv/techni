@@ -59,7 +59,6 @@ and: source /srv/homeassistant/bin/activate
 system_status:
   name: System
   entities:
-    - updater.updater
     - sensor.modem
     - sensor.dsl_uptime
     - sensor.down_rate

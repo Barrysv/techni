@@ -140,8 +140,8 @@ class TechnicolorModemSensor(Entity):
             #res['dsl_type'] = fetch_string(soup, 'DSL Type')
             res['dsl_status'] = fetch_string(soup, 'DSL Status')
             # integer kbps are easier to work with in scripts
-            for n in 'down_rate', 'up_rate', 'down_maxrate', 'up_maxrate':
-                res[n] = int(res[n] * 1000)
+            #for n in 'down_rate', 'up_rate', 'down_maxrate', 'up_maxrate':
+            #    res[n] = int(res[n] * 1000)
             return res
 
         def parse_gateway(res, html):

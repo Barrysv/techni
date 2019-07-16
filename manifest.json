@@ -1,0 +1,8 @@
+{
+  "domain": "technicolor",
+  "name": "Techincolor modem sensor",
+  "documentation": "https://github.com/Barrysv/techni",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": ["bs4==4.6.0","requests==2.22.0","srp==1.0.12","toml==0.9.4"]
+}

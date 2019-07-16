@@ -2,17 +2,9 @@
 Integration of the tgiistats script by Matt Johnston as a home assistant sensor
 
 How to use:
-1. copy to ~homeassistant/.homeassistant/custom_components/sensor/ (create this subfolder)
-2. as your homeassistant user and python profile active install dependancies
-ie do this: sudo su -s /bin/bash homeassistant
-and: source /srv/homeassistant/bin/activate
-```
-  pip3 install bs4
-  pip3 install requests
-  pip3 install srp
-```
+1. copy sensor.py and the dummy __init__.py to ~homeassistant/.homeassistant/custom_components/technicolor/ (create this subfolder)
 
-3. in your sensors.yaml file include the following.
+2. in your sensors.yaml file include the following.
 ```
 - platform: technicolor
   name: modem

@@ -4,10 +4,6 @@ from collections import OrderedDict
 import binascii
 import re
 import json
-#import requests
-#from bs4 import BeautifulSoup
-#import toml
-#import srp
 import datetime
 import time
 import logging
@@ -32,10 +28,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Setup the technicolor modem sensor"""
-    import requests
-    from bs4 import BeautifulSoup
-    import toml
-    import srp
     address = config.get(CONF_HOST)
     username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
@@ -51,6 +43,10 @@ class TechnicolorModemSensor(Entity):
 
     def __init__(self, hass, fetch, name):
         """Initialize the sensor."""
+        import requests
+        from bs4 import BeautifulSoup
+        import toml
+        import srp
         self._state = STATE_UNKNOWN
         self._name = name
         self._hass = hass

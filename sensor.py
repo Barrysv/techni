@@ -176,6 +176,10 @@ class TechnicolorModemSensor(Entity):
 class Fetcher(object):
     """Class for handling the data retrieval."""
     def __init__(self, config):
+        import requests
+        from bs4 import BeautifulSoup
+        import toml
+        import srp
         self.config = config
         self.top_url = 'http://%s' % self.config['address']
         self.session = None

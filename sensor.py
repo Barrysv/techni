@@ -189,6 +189,7 @@ class Fetcher(object):
         """ Authenticates with the modem. 
         Returns a session on success or throws an exception 
         """
+        import requests
         session = requests.Session()
 
         ### Fetch CSRF
